@@ -12,7 +12,7 @@ int main (void)
 
 
     int map[5][7] = {{path, path, wall, wall, path, path, path},
-        {path, wall, path, wall, path, wall, path},
+        {path, path, path, wall, path, wall, path},
         {wall, path, wall, wall, wall, path, path},
         {path, wall, path, wall, path, wall, path},
         {path, path, wall, path, path, wall, path},
@@ -64,6 +64,13 @@ int main (void)
                 player_location.x -= 1;
                 tinygl_pixel_set(player_location, 1);
             }
+        }
+
+        if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+        tinygl_pixel_set(tinygl_point (player_location.x + 1, player_location.y), path);
+            tinygl_pixel_set(tinygl_point (player_location.x - 1, player_location.y), path);
+            tinygl_pixel_set(tinygl_point (player_location.x, player_location.y + 1), path);
+            tinygl_pixel_set(tinygl_point (player_location.x, player_location.y - 1), path);
         }
     }
 }

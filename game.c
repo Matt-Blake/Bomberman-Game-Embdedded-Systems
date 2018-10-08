@@ -20,12 +20,12 @@ int main (void)
     for(int i = 0; i < 5; i++) {
         for(int j = 0; j < 7; j++) {
             if(map[i][j] == wall) {
-                tinygl_pixel_set(tinygl_point (i, j), 1);
+                tinygl_pixel_set(tinygl_point (i, j), wall);
             }
         }
     }
 
-    tinygl_point_t player_location = {1, 1};
+    tinygl_point_t player_location = {0, 0};
     tinygl_pixel_set(player_location, 1);
 
     while (1) {
@@ -33,29 +33,37 @@ int main (void)
         tinygl_update();
         navswitch_update();
 
-        if (navswitch_push_event_p (NAVSWITCH_NORTH)) { // modulise all this stuff
-            tinygl_pixel_set(player_location, 0);
-            player_location.y += 1;
-            tinygl_pixel_set(player_location, 1);
+        if (navswitch_push_event_p (NAVSWITCH_NORTH) && (player_location.y > 0)) { // modulise all this stuff
+            if ((tinygl_pixel_get (tinygl_point (player_location.x, player_location.y - 1))) == 0) {
+                tinygl_pixel_set(player_location, 0);
+                player_location.y -= 1;
+                tinygl_pixel_set(player_location, 1);
+            }
         }
 
 
-        if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
-            tinygl_pixel_set(player_location, 0);
-            player_location.y -= 1;
-            tinygl_pixel_set(player_location, 1);
+        if (navswitch_push_event_p (NAVSWITCH_SOUTH) && (player_location.y < 6)) { // modulise all this stuff and remove constants
+            if ((tinygl_pixel_get (tinygl_point (player_location.x, player_location.y + 1))) == 0) {
+                tinygl_pixel_set(player_location, 0);
+                player_location.y += 1;
+                tinygl_pixel_set(player_location, 1);
+            }
         }
 
-        if (navswitch_push_event_p (NAVSWITCH_EAST)) {
-            tinygl_pixel_set(player_location, 0);
-            player_location.x += 1;
-            tinygl_pixel_set(player_location, 1);
+        if (navswitch_push_event_p (NAVSWITCH_EAST) && (player_location.x < 4)) { // modulise all this stuff and remove constants
+            if ((tinygl_pixel_get (tinygl_point (player_location.x + 1, player_location.y))) == 0) {
+                tinygl_pixel_set(player_location, 0);
+                player_location.x += 1;
+                tinygl_pixel_set(player_location, 1);
+            }
         }
 
-        if (navswitch_push_event_p (NAVSWITCH_WEST)) {
-            tinygl_pixel_set(player_location, 0);
-            player_location.x -= 1;
-            tinygl_pixel_set(player_location, 1);
+        if (navswitch_push_event_p (NAVSWITCH_WEST) && (player_location.x > 0)) { // modulise all this stuff and remove constants
+            if ((tinygl_pixel_get (tinygl_point (player_location.x - 1, player_location.y))) == 0) {
+                tinygl_pixel_set(player_location, 0);
+                player_location.x -= 1;
+                tinygl_pixel_set(player_location, 1);
+            }
         }
     }
 }

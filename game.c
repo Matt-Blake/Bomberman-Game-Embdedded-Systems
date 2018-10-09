@@ -1,6 +1,7 @@
 #include "system.h"
 #include "tinygl.h"
 #include "navswitch.h"
+#include "../fonts/font5x7_1.h"
 
 #define wall 1 // remeber to change these to capital
 #define path 0
@@ -9,7 +10,9 @@ int main (void)
 {
     system_init ();
     tinygl_init (100); // #define this
-
+    tinygl_text_speed_set (10);
+    tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
+    tinygl_font_set (&font5x7_1);
 
     int map[5][7] = {{path, path, wall, wall, path, path, path},
         {path, path, path, wall, path, wall, path},
@@ -32,6 +35,7 @@ int main (void)
     int timesThroughLoop = 0;
     int timeForBomb = 0;
     int bomb_dropped = 0;
+    int win = 0;
     while (1) {
 
         tinygl_update();
@@ -84,21 +88,34 @@ int main (void)
             bomb_location.y = player_location.y;
 
         }
+
+        if(((timeForBomb % 200) == 0 && (bomb_dropped == 1))) {
+            tinygl_pixel_set(bomb_location, 0);
+        } else if(((timeForBomb % 100) == 0) && (bomb_dropped == 1)) {
+            tinygl_pixel_set(bomb_location, 1);
+        }
+
         if ((timeForBomb == 3000) && (bomb_dropped == 1)) {
-            tinygl_pixel_set(tinygl_point (bomb_location.x + 1, bomb_location.y), path);
+            tinygl_pixel_set(tinygl_point (bomb_location.x + 1, bomb_location.y), path); // neaten all this up
             tinygl_pixel_set(tinygl_point (bomb_location.x - 1, bomb_location.y), path);
             tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y + 1), path);
             tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y - 1), path);
             tinygl_pixel_set(bomb_location, 0);
             timeForBomb = 0;
             bomb_dropped = 0;
-        }
-        if(((timeForBomb % 200) == 0 && (bomb_dropped == 1))) {
-            tinygl_pixel_set(bomb_location, 0);
-        } else if(((timeForBomb % 100) == 0) && (bomb_dropped == 1)) {
-            tinygl_pixel_set(bomb_location, 1);
+            if (((player_location.x == bomb_location.x) || (player_location.x == (bomb_location.x - 1)) || (player_location.x == (bomb_location.x + 1))) && ((player_location.y == bomb_location.y) || (player_location.y == (bomb_location.y - 1)) || (player_location.y == (bomb_location.y + 1)))) {
+                break;
+            }
         }
         timesThroughLoop += 1;
         timeForBomb += 1;
+    }
+    tinygl_clear();
+    while (1) {
+        if(win) {
+            tinygl_text("You Win");
+        } else {
+            tinygl_text("You Lose");
+        }
     }
 }

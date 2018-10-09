@@ -105,7 +105,7 @@ int main (void)
             tinygl_pixel_set(bomb_location, 0);
             timeForBomb = 0;
             bomb_dropped = 0;
-            if (((player_location.x == bomb_location.x) || (player_location.x == (bomb_location.x - 1)) || (player_location.x == (bomb_location.x + 1))) && ((player_location.y == bomb_location.y) || (player_location.y == (bomb_location.y - 1)) || (player_location.y == (bomb_location.y + 1)))) {
+            if (((player_location.x == bomb_location.x) && ((player_location.y == bomb_location.y) || (player_location.y == (bomb_location.y - 1)) || (player_location.y == (bomb_location.y + 1)))) || ((player_location.y == bomb_location.y) && ((player_location.x == bomb_location.x) || (player_location.x == (bomb_location.x - 1)) || (player_location.x == (bomb_location.x + 1))))) {
                 break;
             }
         }
@@ -119,8 +119,8 @@ int main (void)
         tinygl_text("You Lose");
     }
     while (1) {
-        pacer_wait();
         tinygl_update ();
+        pacer_wait();
 
     }
 }

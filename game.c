@@ -2,6 +2,7 @@
 #include "tinygl.h"
 #include "navswitch.h"
 #include "../fonts/font5x7_1.h"
+#include "pacer.h"
 
 #define wall 1 // remeber to change these to capital
 #define path 0
@@ -9,8 +10,9 @@
 int main (void)
 {
     system_init ();
-    tinygl_init (100); // #define this
-    tinygl_text_speed_set (10);
+     pacer_init (500);
+    tinygl_init (500); // #define this
+    tinygl_text_speed_set (20);
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_font_set (&font5x7_1);
 
@@ -111,12 +113,14 @@ int main (void)
         timeForBomb += 1;
     }
     tinygl_clear();
+    if(win) {
+        tinygl_text("You Win");
+    } else {
+        tinygl_text("You Lose");
+    }
     while (1) {
+        pacer_wait();
         tinygl_update ();
-        if(win) {
-            tinygl_text("You Win");
-        } else {
-            tinygl_text("You Lose");
-        }
+
     }
 }

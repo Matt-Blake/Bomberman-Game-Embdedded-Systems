@@ -112,6 +112,7 @@ int main (void)
     }
     tinygl_clear();
     while (1) {
+        tinygl_update ();
         if(win) {
             tinygl_text("You Win");
         } else {

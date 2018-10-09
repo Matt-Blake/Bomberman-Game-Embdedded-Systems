@@ -10,8 +10,9 @@
 int main (void)
 {
     system_init ();
-     pacer_init (500);
+    pacer_init (500);
     tinygl_init (500); // #define this
+    ir_uart_init ();
     tinygl_text_speed_set (20);
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_font_set (&font5x7_1);
@@ -39,6 +40,12 @@ int main (void)
     int bomb_dropped = 0;
     int win = 0;
     while (1) {
+
+        if (ir_uart_read_ready_p ()) { // Is this right.
+            //char ch;
+
+            //ch = ir_uart_getc ();
+        }
 
         tinygl_update();
         navswitch_update();
@@ -112,8 +119,10 @@ int main (void)
         timesThroughLoop += 1;
         timeForBomb += 1;
     }
+
     tinygl_clear();
-    if(win) {
+
+    if (win) {
         tinygl_text("You Win");
     } else {
         tinygl_text("You Lose");

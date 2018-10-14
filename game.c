@@ -32,7 +32,7 @@ int main (void)
     tinygl_point_t bomb_location = {0, 0};
 
     tinygl_point_t player_location = {0, 0};
-    tinygl_point_t enemy_location = {4, 6}; // change this later.
+    tinygl_point_t enemy_location = {0, 0}; // change this later.
 
     int timesThroughLoop = 0;
     int timeForPlayerBomb = 0;
@@ -45,7 +45,6 @@ int main (void)
         navswitch_update();
 
         if (ir_uart_read_ready_p ()) { // if other player seclect first
-            index = ir_uart_getc ();
             if (ir_uart_getc () == 'A') {
                 player_location.x = player_2.x;
                 player_location.y = player_2.y;

@@ -79,22 +79,21 @@ int main (void)
         navswitch_update();
 
         if (ir_uart_read_ready_p ()) { // recieve movement
-            if ((ir_uart_getc () != 'W') && (ir_uart_getc () != 'L') {
+            if ((ir_uart_getc () != 'W') && (ir_uart_getc () != 'L')) {
             index = ir_uart_getc () - 48;
                 tinygl_pixel_set(enemy_location, 0);
                 enemy_location.x = index / 7;
                 enemy_location.y = (index / 7) + (index % 7);
                 tinygl_pixel_set(enemy_location, 1);
-            }
-            else if (ir_uart_getc () != 'W') {
-                win = 1;
-                break;
-            else if (ir_uart_getc () != 'L') {
-                break;
-            }
+            } else if (ir_uart_getc () != 'W') {
+            win = 1;
+            break;
+        } else if (ir_uart_getc () != 'L') {
+            break;
         }
+    }
 
-        if(timesThroughLoop == 1000) { // Flashes the Player and enemy
+    if(timesThroughLoop == 1000) { // Flashes the Player and enemy
             tinygl_pixel_set(player_location, 0);
             tinygl_pixel_set(enemy_location, 0);
         } else if(timesThroughLoop == 2000) {

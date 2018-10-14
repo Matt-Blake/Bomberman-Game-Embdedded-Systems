@@ -92,7 +92,7 @@ int main (void)
             break;
         }
     }
-
+//
     if(timesThroughLoop == 1000) { // Flashes the Player and enemy
             tinygl_pixel_set(player_location, 0);
             tinygl_pixel_set(enemy_location, 0);

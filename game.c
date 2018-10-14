@@ -36,7 +36,7 @@ int main (void)
 
     int timesThroughLoop = 0;
     int timeForPlayerBomb = 0;
-    int timeForEnemyBomb = 0;
+    //int timeForEnemyBomb = 0;
     int player_bomb_dropped = 0;
     int enemy_bomb_dropped = 0;
     int win = 0;
@@ -45,11 +45,11 @@ int main (void)
         navswitch_update();
 
         if (ir_uart_read_ready_p ()) { // if other player seclect first
-            if (ir_uart_getc () == 'A') {
+            //if (ir_uart_getc () == 'A') {
                 player_location.x = player_2.x;
                 player_location.y = player_2.y;
                 break;
-            }
+            //}
         } else if (navswitch_push_event_p (NAVSWITCH_PUSH)) { // if you select first
             ir_uart_putc ('A'); // is this the right thing?
             break;

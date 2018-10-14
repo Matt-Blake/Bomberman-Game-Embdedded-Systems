@@ -26,17 +26,18 @@ int main (void)
             {4, 0}, {4, 1}, {4, 2}, {4, 3}, {4, 4}, {4, 5}, {4, 6},
         };
     */
-    int index = 0;
+    // int index = 0;
 
     tinygl_point_t player_2 = {4, 6}; // fix variable names
     tinygl_point_t bomb_location = {0, 0};
+    tinygl_point_t enemy_bomb_location = {0, 0};
 
     tinygl_point_t player_location = {0, 0};
     tinygl_point_t enemy_location = {0, 0}; // change this later.
 
     int timesThroughLoop = 0;
     int timeForPlayerBomb = 0;
-    //int timeForEnemyBomb = 0;
+    int timeForEnemyBomb = 0;
     int player_bomb_dropped = 0;
     int enemy_bomb_dropped = 0;
     int win = 0;
@@ -81,17 +82,31 @@ int main (void)
         navswitch_update();
 
         if (ir_uart_read_ready_p ()) { // recieve movement
-            if ((ir_uart_getc () != 'W') && (ir_uart_getc () != 'L')) {
-                index = ir_uart_getc () - 48;
+            if (ir_uart_getc () == 'N') {
                 tinygl_pixel_set(enemy_location, 0);
-                enemy_location.x = index / 7;
-                enemy_location.y = (index / 7) + (index % 7);
+                enemy_location.y -= 1;
+                tinygl_pixel_set(enemy_location, 1);
+            } else if (ir_uart_getc () == 'S') {
+                tinygl_pixel_set(enemy_location, 0);
+                enemy_location.y += 1;
+                tinygl_pixel_set(enemy_location, 1);
+            } else if (ir_uart_getc () == 'E') {
+                tinygl_pixel_set(enemy_location, 0);
+                enemy_location.x += 1;
+                tinygl_pixel_set(enemy_location, 1);
+            } else if (ir_uart_getc () == 'F') {
+                tinygl_pixel_set(enemy_location, 0);
+                enemy_location.x -= 1;
                 tinygl_pixel_set(enemy_location, 1);
             } else if (ir_uart_getc () == 'W') {
                 win = 1;
                 break;
             } else if (ir_uart_getc () == 'L') {
                 break;
+            } else if (ir_uart_getc () == 'B') {
+                enemy_bomb_location.x = enemy_location.x;
+                enemy_bomb_location.y = enemy_location.y;
+                enemy_bomb_dropped = 1;
             }
         }
 //
@@ -109,7 +124,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.y -= 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (48 + player_location.y + player_location.x * 7);
+                ir_uart_putc ('N');
             }
         }
 
@@ -119,7 +134,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.y += 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (48 + player_location.y + player_location.x * 7);
+                ir_uart_putc ('S');
             }
         }
 
@@ -128,7 +143,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.x += 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (48 + player_location.y + player_location.x * 7);
+                ir_uart_putc ('E');
             }
         }
 
@@ -137,7 +152,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.x -= 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (48 + player_location.y + player_location.x * 7);
+                ir_uart_putc ('F');
             }
         }
 
@@ -146,13 +161,19 @@ int main (void)
             timeForPlayerBomb = 0;
             bomb_location.x = player_location.x;
             bomb_location.y = player_location.y;
-
+            ir_uart_putc ('B');
         }
 
-        if(((timeForPlayerBomb % 200) == 0 && (player_bomb_dropped == 1))) {
+        if(((timeForPlayerBomb % 200) == 0 && (player_bomb_dropped == 1))) { // flahes bomb
             tinygl_pixel_set(bomb_location, 0);
         } else if(((timeForPlayerBomb % 100) == 0) && (player_bomb_dropped == 1)) {
             tinygl_pixel_set(bomb_location, 1);
+        }
+
+        if(((timeForEnemyBomb % 200) == 0 && (enemy_bomb_dropped == 1))) { // flahes enemy bomb
+            tinygl_pixel_set(enemy_bomb_location, 0);
+        } else if(((timeForEnemyBomb % 100) == 0) && (enemy_bomb_dropped == 1)) {
+            tinygl_pixel_set(enemy_bomb_location, 1);
         }
 
         if ((timeForPlayerBomb == 3000) && (player_bomb_dropped == 1)) { // bomb explosion
@@ -177,8 +198,10 @@ int main (void)
                 break;
             }
         }
+
         timesThroughLoop += 1;
         timeForPlayerBomb += 1;
+        timeForEnemyBomb += 1;
     }
 
     tinygl_clear();

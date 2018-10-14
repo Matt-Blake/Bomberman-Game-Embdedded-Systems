@@ -46,6 +46,7 @@ int main (void)
 
         if (ir_uart_read_ready_p ()) { // if other player seclect first
             //if (ir_uart_getc () == 'A') {
+            index = ir_uart_getc () - 48;
                 player_location.x = player_2.x;
                 player_location.y = player_2.y;
                 break;
@@ -101,7 +102,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.y -= 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (player_location.y + player_location.x * 7);
+                ir_uart_putc (48 + player_location.y + player_location.x * 7);
             }
         }
 
@@ -111,7 +112,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.y += 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (player_location.y + player_location.x * 7);
+                ir_uart_putc (48 + player_location.y + player_location.x * 7);
             }
         }
 
@@ -120,7 +121,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.x += 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (player_location.y + player_location.x * 7);
+                ir_uart_putc (48 + player_location.y + player_location.x * 7);
             }
         }
 
@@ -129,7 +130,7 @@ int main (void)
                 tinygl_pixel_set(player_location, 0);
                 player_location.x -= 1;
                 tinygl_pixel_set(player_location, 1);
-                ir_uart_putc (player_location.y + player_location.x * 7);
+                ir_uart_putc (48 + player_location.y + player_location.x * 7);
             }
         }
 

@@ -1,8 +1,9 @@
 #include "system.h"
 #include "tinygl.h"
 #include "navswitch.h"
-#include "../fonts/font5x7_1.h"
+#include "../fonts/font5x7_1.h" // clear stuff out of makefile thats not needed after modulisation etc
 #include "pacer.h"
+#include "ir_uart.h"
 
 #define wall 1 // remeber to change these to capital
 #define path 0
@@ -16,6 +17,28 @@ int main (void)
     tinygl_text_speed_set (20);
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_font_set (&font5x7_1);
+
+
+    tinygl_point_t player_2 = {4, 6}; // fix variable names
+    tinygl_point_t bomb_location = {0, 0};
+
+    tinygl_point_t player_location = {0, 0};
+    tinygl_point_t enemy_location = {4, 6}; // change this later.
+
+    int timesThroughLoop = 0;
+    int timeForBomb = 0;
+    int bomb_dropped = 0;
+    int win = 0;
+    while (1) {
+        if (ir_uart_read_ready_p ()) {
+            player_location.x = player_2.x;
+            player_location.y = player_2.y;
+            break;
+        } else if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+            ir_uart_putc ('A');
+            break;
+        }
+    }
 
     int map[5][7] = {{path, path, wall, wall, path, path, path},
         {path, path, path, wall, path, wall, path},
@@ -31,14 +54,9 @@ int main (void)
         }
     }
 
-    tinygl_point_t player_location = {0, 0}; // fix variable names
     tinygl_pixel_set(player_location, 1);
-    tinygl_point_t bomb_location = {0, 0};
+    tinygl_pixel_set(enemy_location, 1);
 
-    int timesThroughLoop = 0;
-    int timeForBomb = 0;
-    int bomb_dropped = 0;
-    int win = 0;
     while (1) {
 
         if (ir_uart_read_ready_p ()) { // Is this right.
@@ -52,8 +70,10 @@ int main (void)
 
         if(timesThroughLoop == 1000) { // Flashes the Player
             tinygl_pixel_set(player_location, 0);
+            tinygl_pixel_set(enemy_location, 0);
         } else if(timesThroughLoop == 2000) {
             tinygl_pixel_set(player_location, 1);
+            tinygl_pixel_set(enemy_location, 1);
             timesThroughLoop = 0;
         }
 
@@ -90,7 +110,7 @@ int main (void)
             }
         }
 
-        if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+        if (navswitch_push_event_p (NAVSWITCH_PUSH) && !bomb_dropped) {
             bomb_dropped = 1;
             timeForBomb = 0;
             bomb_location.x = player_location.x;
@@ -113,6 +133,13 @@ int main (void)
             timeForBomb = 0;
             bomb_dropped = 0;
             if (((player_location.x == bomb_location.x) && ((player_location.y == bomb_location.y) || (player_location.y == (bomb_location.y - 1)) || (player_location.y == (bomb_location.y + 1)))) || ((player_location.y == bomb_location.y) && ((player_location.x == bomb_location.x) || (player_location.x == (bomb_location.x - 1)) || (player_location.x == (bomb_location.x + 1))))) {
+                if (((enemy_location.x == bomb_location.x) && ((enemy_location.y == bomb_location.y) || (enemy_location.y == (bomb_location.y - 1)) || (enemy_location.y == (bomb_location.y + 1)))) || ((enemy_location.y == bomb_location.y) && ((enemy_location.x == bomb_location.x) || (enemy_location.x == (bomb_location.x - 1)) || (enemy_location.x == (bomb_location.x + 1))))) {
+                    ir_uart_putc ('L');
+                    break;
+                }
+            } else if (((enemy_location.x == bomb_location.x) && ((enemy_location.y == bomb_location.y) || (enemy_location.y == (bomb_location.y - 1)) || (enemy_location.y == (bomb_location.y + 1)))) || ((enemy_location.y == bomb_location.y) && ((enemy_location.x == bomb_location.x) || (enemy_location.x == (bomb_location.x - 1)) || (enemy_location.x == (bomb_location.x + 1))))) {
+                ir_uart_putc ('L');
+                win = 1;
                 break;
             }
         }
@@ -127,6 +154,7 @@ int main (void)
     } else {
         tinygl_text("You Lose");
     }
+
     while (1) {
         tinygl_update ();
         pacer_wait();

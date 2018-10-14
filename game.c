@@ -52,6 +52,8 @@ int main (void)
             //}
         } else if (navswitch_push_event_p (NAVSWITCH_PUSH)) { // if you select first
             ir_uart_putc ('A'); // is this the right thing?
+            enemy_location.x = player_2.x;
+            enemy_location.y = player_2.y;
             break;
         }
     }

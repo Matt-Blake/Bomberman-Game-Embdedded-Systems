@@ -79,13 +79,19 @@ int main (void)
         navswitch_update();
 
         if (ir_uart_read_ready_p ()) { // recieve movement
-            //if (ir_uart_getc () == 'M') {
+            if ((ir_uart_getc () != 'W') && (ir_uart_getc () != 'L') {
             index = ir_uart_getc () - 48;
-            tinygl_pixel_set(enemy_location, 0);
-            enemy_location.x = index / 7;
-            enemy_location.y = (index / 7) + (index % 7);
-            tinygl_pixel_set(enemy_location, 1);
-            //}
+                tinygl_pixel_set(enemy_location, 0);
+                enemy_location.x = index / 7;
+                enemy_location.y = (index / 7) + (index % 7);
+                tinygl_pixel_set(enemy_location, 1);
+            }
+            else if (ir_uart_getc () != 'W') {
+                win = 1;
+                break;
+            else if (ir_uart_getc () != 'L') {
+                break;
+            }
         }
 
         if(timesThroughLoop == 1000) { // Flashes the Player and enemy
@@ -161,6 +167,7 @@ int main (void)
                 if (((enemy_location.x == bomb_location.x) && ((enemy_location.y == bomb_location.y) || (enemy_location.y == (bomb_location.y - 1)) || (enemy_location.y == (bomb_location.y + 1)))) || ((enemy_location.y == bomb_location.y) && ((enemy_location.x == bomb_location.x) || (enemy_location.x == (bomb_location.x - 1)) || (enemy_location.x == (bomb_location.x + 1))))) {
                     ir_uart_putc ('L');
                 }
+                ir_uart_putc ('W');
                 break;
 
             } else if (((enemy_location.x == bomb_location.x) && ((enemy_location.y == bomb_location.y) || (enemy_location.y == (bomb_location.y - 1)) || (enemy_location.y == (bomb_location.y + 1)))) || ((enemy_location.y == bomb_location.y) && ((enemy_location.x == bomb_location.x) || (enemy_location.x == (bomb_location.x - 1)) || (enemy_location.x == (bomb_location.x + 1))))) {

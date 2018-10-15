@@ -18,7 +18,7 @@ int main (void)
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_font_set (&font5x7_1);
 
-    //tinygl_point_t player_2 = {4, 6}; // fix variable names
+    tinygl_point_t player_2 = {4, 6}; // fix variable names
     tinygl_point_t bomb_location = {0, 0};
     tinygl_point_t enemy_bomb_location = {0, 0};
 
@@ -31,25 +31,27 @@ int main (void)
     int player_bomb_dropped = 0;
     int enemy_bomb_dropped = 0;
     int win = 0;
+    char c = 0;
+    char d = 0;
 
-    /*
-        while (1) { // side selection section
-            navswitch_update();
+    while (1) { // side selection section
+        navswitch_update();
 
-            if (ir_uart_read_ready_p ()) { // if other player seclect first
-                //if (ir_uart_getc () == 'A') {
+        if (ir_uart_read_ready_p ()) { // if other player seclect first
+            d = ir_uart_getc ();
+            if (d == 'A') {
                 player_location.x = player_2.x;
                 player_location.y = player_2.y;
                 break;
-                //}
-            } else if (navswitch_push_event_p (NAVSWITCH_PUSH)) { // if you select first
-                ir_uart_putc ('A'); // is this the right thing?
-                enemy_location.x = player_2.x;
-                enemy_location.y = player_2.y;
-                break;
             }
+        } else if (navswitch_push_event_p (NAVSWITCH_PUSH)) { // if you select first
+            ir_uart_putc ('A'); // is this the right thing?
+            enemy_location.x = player_2.x;
+            enemy_location.y = player_2.y;
+            break;
         }
-    */
+    }
+
 
     int map[5][7] = {{path, path, wall, wall, path, path, path}, // map making section
         {path, path, path, wall, path, wall, path},
@@ -67,7 +69,7 @@ int main (void)
 
     tinygl_pixel_set(player_location, 1); // initalise players
     tinygl_pixel_set(enemy_location, 1);
-    char c = 0;
+
     while (1) {
 
         tinygl_update();
@@ -100,11 +102,11 @@ int main (void)
             } else if (c == 'L') {
                 break;
             } else if (c == 'B') {
-            enemy_bomb_location.x = enemy_location.x;
-            enemy_bomb_location.y = enemy_location.y;
-            enemy_bomb_dropped = 1;
-        } else if (c == 'P') {
-            tinygl_pixel_set(tinygl_point (bomb_location.x + 1, bomb_location.y), path);    // neaten all this up
+                enemy_bomb_location.x = enemy_location.x;
+                enemy_bomb_location.y = enemy_location.y;
+                enemy_bomb_dropped = 1;
+            } else if (c == 'P') {
+                tinygl_pixel_set(tinygl_point (bomb_location.x + 1, bomb_location.y), path);    // neaten all this up
                 tinygl_pixel_set(tinygl_point (bomb_location.x - 1, bomb_location.y), path);
                 tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y + 1), path);
                 tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y - 1), path);

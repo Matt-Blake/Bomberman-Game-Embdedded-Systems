@@ -14,7 +14,7 @@ int main (void)
     pacer_init (500);
     tinygl_init (500); // #define this
     ir_uart_init ();
-    tinygl_text_speed_set (20);
+    tinygl_text_speed_set (27);
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_font_set (&font5x7_1);
 
@@ -34,8 +34,13 @@ int main (void)
     char c = 0;
     char d = 0;
 
+    tinygl_text("Press Joystick to Start");
+
     while (1) { // side selection section
+
+        tinygl_update();
         navswitch_update();
+        pacer_wait();
 
         if (ir_uart_read_ready_p ()) { // if other player seclect first
             d = ir_uart_getc ();
@@ -52,6 +57,7 @@ int main (void)
         }
     }
 
+    tinygl_clear();
 
     int map[5][7] = {{path, path, wall, wall, path, path, path}, // map making section
         {path, path, path, wall, path, wall, path},

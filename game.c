@@ -220,9 +220,9 @@ int main (void)
     tinygl_clear();
 
     if (win) {
-        tinygl_text("You Win");
+        tinygl_text("YOU WIN");
     } else {
-        tinygl_text("You Lose");
+        tinygl_text("YOU LOSE");
     }
 
     while (1) {

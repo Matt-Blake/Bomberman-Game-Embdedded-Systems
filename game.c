@@ -18,16 +18,6 @@ int main (void)
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_font_set (&font5x7_1);
 
-    /*
-        //int location[5][7] = [35][2] = {{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, // Coordinates of map
-            {1, 0}, {1, 1}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6},
-            {2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6},
-            {3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4}, {3, 5}, {3, 6},
-            {4, 0}, {4, 1}, {4, 2}, {4, 3}, {4, 4}, {4, 5}, {4, 6},
-        };
-    */
-    // int index = 0;
-
     tinygl_point_t player_2 = {4, 6}; // fix variable names
     tinygl_point_t bomb_location = {0, 0};
     tinygl_point_t enemy_bomb_location = {0, 0};
@@ -107,6 +97,14 @@ int main (void)
                 enemy_bomb_location.x = enemy_location.x;
                 enemy_bomb_location.y = enemy_location.y;
                 enemy_bomb_dropped = 1;
+            } else if (ir_uart_getc () == 'P') {
+                tinygl_pixel_set(tinygl_point (bomb_location.x + 1, bomb_location.y), path);    // neaten all this up
+                tinygl_pixel_set(tinygl_point (bomb_location.x - 1, bomb_location.y), path);
+                tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y + 1), path);
+                tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y - 1), path);
+                tinygl_pixel_set(bomb_location, 0);
+                timeForPlayerBomb = 0;
+                player_bomb_dropped = 0;
             }
         }
 //
@@ -177,6 +175,7 @@ int main (void)
         }
 
         if ((timeForPlayerBomb == 3000) && (player_bomb_dropped == 1)) { // bomb explosion
+            ir_uart_putc ('P');
             tinygl_pixel_set(tinygl_point (bomb_location.x + 1, bomb_location.y), path); // neaten all this up
             tinygl_pixel_set(tinygl_point (bomb_location.x - 1, bomb_location.y), path);
             tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y + 1), path);

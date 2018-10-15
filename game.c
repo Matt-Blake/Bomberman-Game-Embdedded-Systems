@@ -106,13 +106,13 @@ int main (void)
                 enemy_bomb_location.y = enemy_location.y;
                 enemy_bomb_dropped = 1;
             } else if (c == 'P') {
-                tinygl_pixel_set(tinygl_point (bomb_location.x + 1, bomb_location.y), path);    // neaten all this up
-                tinygl_pixel_set(tinygl_point (bomb_location.x - 1, bomb_location.y), path);
-                tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y + 1), path);
-                tinygl_pixel_set(tinygl_point (bomb_location.x, bomb_location.y - 1), path);
-                tinygl_pixel_set(bomb_location, 0);
-                timeForPlayerBomb = 0;
-                player_bomb_dropped = 0;
+                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x + 1, enemy_bomb_location.y), path);    // neaten all this up
+                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x - 1, enemy_bomb_location.y), path);
+                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x, enemy_bomb_location.y + 1), path);
+                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x, enemy_bomb_location.y - 1), path);
+                tinygl_pixel_set(enemy_bomb_location, 0);
+                timeForEnemyBomb = 0;
+                enemy_bomb_dropped = 0;
             }
         }
 

@@ -5,11 +5,11 @@
 
 void bombs_drop_bomb(tinygl_point_t* bomb_location, tinygl_point_t* player_location, int* player_bomb_dropped, int* timeForPlayerBomb)
 {
-
     *player_bomb_dropped = 1;
     *timeForPlayerBomb = 0;
     bomb_location->x = player_location->x;
     bomb_location->y = player_location->y;
+    tinygl_pixel_set(*bomb_location, 1);
     ir_uart_putc ('B');
 }
 
@@ -60,7 +60,7 @@ void bombs_detonate(tinygl_point_t* bomb_location, tinygl_point_t* player_locati
 
 void bombs_tracker(tinygl_point_t* bomb_location, tinygl_point_t* enemy_bomb_location, tinygl_point_t* player_location, tinygl_point_t* enemy_location, int* timeForPlayerBomb, int* player_bomb_dropped, int* timeForEnemyBomb, int* enemy_bomb_dropped, int* win)
 {
-    if (navswitch_push_event_p (NAVSWITCH_PUSH) && !player_bomb_dropped) {
+    if (navswitch_push_event_p (NAVSWITCH_PUSH) && (*player_bomb_dropped == 0)) {
         bombs_drop_bomb(bomb_location, player_location, player_bomb_dropped, timeForPlayerBomb);
     }
     bombs_flash_bomb(bomb_location, player_bomb_dropped, timeForPlayerBomb);

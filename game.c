@@ -39,9 +39,9 @@ int main (void)
     tinygl_text("PRESS JOYSTICK TO START");
 
     sideSelect_select(&player_location, &enemy_location);
-
     tinygl_clear();
 
+    map_generator_generate();
     tinygl_pixel_set(player_location, 1); // initalise players
     tinygl_pixel_set(enemy_location, 1);
 

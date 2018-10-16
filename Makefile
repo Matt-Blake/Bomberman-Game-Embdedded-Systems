@@ -16,7 +16,7 @@ all: game.out
 
 
 # Compile: create object files from C source files.
-game.o: game.c ../../drivers/avr/system.h ../../drivers/avr/ir_uart.h ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/navswitch.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/pacer.h ../../utils/tinygl.h reciever.h mapGenerator.h sideSelect.h flasher.h playerMove.h bombs.h finalText.h
+game.o: game.c ../../drivers/avr/system.h ../../drivers/avr/ir_uart.h ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/navswitch.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/pacer.h ../../utils/tinygl.h reciever.h mapGenerator.h sideSelect.h flasher.h playerMove.h bombs.h finalText.h initalise.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 ir_uart.o: ../../drivers/avr/ir_uart.c ../../drivers/avr/ir_uart.h ../../drivers/avr/pio.h ../../drivers/avr/system.h ../../drivers/avr/timer0.h ../../drivers/avr/usart1.h
@@ -72,11 +72,13 @@ playerMove.o: playerMove.c ../../drivers/avr/system.h ../../utils/tinygl.h ../..
 
 bombs.o: bombs.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h bombs.h
 
-finalText.o: finalText.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../utils/pacer.h finalText.h
+finalText.o: finalText.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../utils/pacer.h ../../fonts/font5x7_1.h finalText.h
+
+initalise.o: initalise.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../drivers/navswitch.h ../../utils/pacer.h ../../fonts/font5x7_1.h ../../drivers/avr/ir_uart.h initalise.h
 
 
 # Link: create ELF output file from object files.
-game.out: game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o reciever.o mapGenerator.o sideSelect.o flasher.o playerMove.o bombs.o finalText.o
+game.out: game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o reciever.o mapGenerator.o sideSelect.o flasher.o playerMove.o bombs.o finalText.o initalise.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

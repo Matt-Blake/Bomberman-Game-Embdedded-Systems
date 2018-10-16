@@ -13,6 +13,7 @@
 #include "finalText.h"
 #include "initalise.h"
 
+#define ON 1
 //change make file including headers for makefile.
 // remeber to change globals to capital and do good variable names
 // can maybe mix modules together
@@ -24,7 +25,7 @@ int main (void)
     tinygl_point_t bomb_location = {0, 0};
     tinygl_point_t enemy_bomb_location = {0, 0};
     tinygl_point_t player_location = {0, 0};
-    tinygl_point_t enemy_location = {0, 0}; // change this later.
+    tinygl_point_t enemy_location = {0, 0};
 
     int timesThroughLoop = 0;
     int timeForPlayerBomb = 0;
@@ -36,8 +37,8 @@ int main (void)
     sideSelect_select(&player_location, &enemy_location);
     tinygl_clear();
     map_generator_generate();
-    tinygl_pixel_set(player_location, 1); // initalise players
-    tinygl_pixel_set(enemy_location, 1);
+    tinygl_pixel_set(player_location, ON); // Initalise players
+    tinygl_pixel_set(enemy_location, ON;
 
     while (1) {
         tinygl_update();

@@ -4,10 +4,14 @@
 #include "../fonts/font5x7_1.h" // clear stuff out of makefile thats not needed after modulisation etc
 #include "pacer.h"
 #include "ir_uart.h"
+#include "reciever.h" // do I need to make a header file as well for everything
+#include "mapGenerator.h"
+#include "sideSelect.h"
 
+//change make file including headers for makefile.
 #define wall 1 // remeber to change these to capital
 #define path 0
-
+// can maybe mix modules together
 int main (void)
 {
     system_init (); // initalising section
@@ -18,7 +22,7 @@ int main (void)
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_font_set (&font5x7_1);
 
-    tinygl_point_t player_2 = {4, 6}; // fix variable names
+
     tinygl_point_t bomb_location = {0, 0};
     tinygl_point_t enemy_bomb_location = {0, 0};
 
@@ -31,31 +35,10 @@ int main (void)
     int player_bomb_dropped = 0;
     int enemy_bomb_dropped = 0;
     int win = 0;
-    char c = 0;
-    char d = 0;
 
-    tinygl_text("Press Joystick to Start");
+    tinygl_text("PRESS JOYSTICK TO START");
 
-    while (1) { // side selection section
-
-        tinygl_update();
-        navswitch_update();
-        pacer_wait();
-
-        if (ir_uart_read_ready_p ()) { // if other player seclect first
-            d = ir_uart_getc ();
-            if (d == 'A') {
-                player_location.x = player_2.x;
-                player_location.y = player_2.y;
-                break;
-            }
-        } else if (navswitch_push_event_p (NAVSWITCH_PUSH)) { // if you select first
-            ir_uart_putc ('A'); // is this the right thing?
-            enemy_location.x = player_2.x;
-            enemy_location.y = player_2.y;
-            break;
-        }
-    }
+    sideSelect_select(&player_location, &enemy_location);
 
     tinygl_clear();
 
@@ -81,45 +64,12 @@ int main (void)
         tinygl_update();
         navswitch_update();
 
-
+        if (win > 0) { // End game statement
+            break;
+        }
 
         if (ir_uart_read_ready_p ()) { // recieve movement
-            c = ir_uart_getc ();
-            if (c == 'N') {
-                tinygl_pixel_set(enemy_location, 0);
-                enemy_location.y -= 1;
-                tinygl_pixel_set(enemy_location, 1);
-            } else if (c == 'S') {
-                tinygl_pixel_set(enemy_location, 0);
-                enemy_location.y += 1;
-                tinygl_pixel_set(enemy_location, 1);
-            } else if (c == 'E') {
-                tinygl_pixel_set(enemy_location, 0);
-                enemy_location.x += 1;
-                tinygl_pixel_set(enemy_location, 1);
-            } else if (c == 'F') {
-                tinygl_pixel_set(enemy_location, 0);
-                enemy_location.x -= 1;
-                tinygl_pixel_set(enemy_location, 1);
-
-            } else if (c == 'W') { // change back to else if
-                win = 1;
-                break;
-            } else if (c == 'L') {
-                break;
-            } else if (c == 'B') {
-                enemy_bomb_location.x = enemy_location.x;
-                enemy_bomb_location.y = enemy_location.y;
-                enemy_bomb_dropped = 1;
-            } else if (c == 'P') {
-                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x + 1, enemy_bomb_location.y), path);    // neaten all this up
-                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x - 1, enemy_bomb_location.y), path);
-                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x, enemy_bomb_location.y + 1), path);
-                tinygl_pixel_set(tinygl_point (enemy_bomb_location.x, enemy_bomb_location.y - 1), path);
-                tinygl_pixel_set(enemy_bomb_location, 0);
-                timeForEnemyBomb = 0;
-                enemy_bomb_dropped = 0;
-            }
+            reciever_recieve(&enemy_location, &enemy_bomb_location, &win, &enemy_bomb_dropped, &timeForEnemyBomb);
         }
 
         if(timesThroughLoop == 1000) { // Flashes the Player and enemy
@@ -219,9 +169,9 @@ int main (void)
 
     tinygl_clear();
 
-    if (win) {
+    if (win == 1) {
         tinygl_text("YOU WIN");
-    } else {
+    } else if (win == 2) {
         tinygl_text("YOU LOSE");
     }
 

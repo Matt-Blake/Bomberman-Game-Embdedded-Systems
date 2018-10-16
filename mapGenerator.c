@@ -7,9 +7,9 @@
 
 void map_generator_generate(void)
 {
-    int map[5][7] = {{path, path, wall, wall, path, path, path}, // map making section
-        {path, path, path, wall, path, wall, path},
-        {wall, path, wall, wall, wall, path, path},
+    int map[5][7] = {{path, wall, path, wall, path, wall, path}, // map making section
+        {path, wall, path, wall, path, wall, path},
+        {path, path, wall, wall, wall, path, path},
         {path, wall, path, wall, path, wall, path},
         {path, path, wall, path, path, wall, path},
     };

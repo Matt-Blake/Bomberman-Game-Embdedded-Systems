@@ -2,6 +2,7 @@
 #include "tinygl.h"
 #include "navswitch.h"
 #include "ir_uart.h"
+#include "sound.h"
 
 void bombs_drop_bomb(tinygl_point_t* bomb_location, tinygl_point_t* player_location, int* player_bomb_dropped, int* timeForPlayerBomb)
 {

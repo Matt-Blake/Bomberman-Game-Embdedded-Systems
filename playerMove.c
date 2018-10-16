@@ -10,6 +10,7 @@ void playerMove_north(tinygl_point_t* player_location)
         player_location->y -= 1;
         tinygl_pixel_set(*player_location, 1);
         ir_uart_putc ('N');
+        beep(700);
     }
 }
 
@@ -20,6 +21,7 @@ void playerMove_south(tinygl_point_t* player_location)
         player_location->y += 1;
         tinygl_pixel_set(*player_location, 1);
         ir_uart_putc ('S');
+        beep(700);
     }
 }
 
@@ -30,6 +32,7 @@ void playerMove_east(tinygl_point_t* player_location)
         player_location->x += 1;
         tinygl_pixel_set(*player_location, 1);
         ir_uart_putc ('E');
+        beep(700);
     }
 }
 
@@ -40,6 +43,7 @@ void playerMove_west(tinygl_point_t* player_location)
         player_location->x -= 1;
         tinygl_pixel_set(*player_location, 1);
         ir_uart_putc ('F');
+        beep(700);
     }
 }
 

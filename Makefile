@@ -1,7 +1,7 @@
 # File:   Makefile
-# Author: M. P. Hayes, UCECE
-# Date:   12 Sep 2010
-# Descr:  Makefile for game
+# Author: Matthew Blake (58979250) and James 78055194
+# Date:   16 October 2018
+# Descr:  Makefile for Bomberman game
 
 # Definitions.
 CC = avr-gcc
@@ -16,7 +16,7 @@ all: game.out
 
 
 # Compile: create object files from C source files.
-game.o: game.c ../../drivers/avr/system.h ../../drivers/avr/ir_uart.h ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/navswitch.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/pacer.h ../../utils/tinygl.h reciever.h mapGenerator.h sideSelect.h flasher.h playerMove.h bombs.h finalText.h initalise.h sound.h
+game.o: game.c ../../drivers/avr/system.h ../../drivers/avr/ir_uart.h ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/navswitch.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/pacer.h ../../utils/tinygl.h reciever.h mapGenerator.h sideSelect.h flasher.h playerMove.h bombs.h finalText.h initalise.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 ir_uart.o: ../../drivers/avr/ir_uart.c ../../drivers/avr/ir_uart.h ../../drivers/avr/pio.h ../../drivers/avr/system.h ../../drivers/avr/timer0.h ../../drivers/avr/usart1.h
@@ -64,22 +64,20 @@ reciever.o: reciever.c reciever.h ../../drivers/avr/system.h ../../utils/tinygl.
 mapGenerator.o: mapGenerator.c mapGenerator.h ../../drivers/avr/system.h ../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-sideSelect.o: sideSelect.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../drivers/avr/ir_uart.h ../../drivers/navswitch.h sideSelect.h
+sideSelect.o: sideSelect.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../drivers/avr/ir_uart.h ../../utils/pacer.h ../../drivers/navswitch.h sideSelect.h
 
 flasher.o: flasher.c ../../drivers/avr/system.h ../../utils/tinygl.h flasher.h
 
 playerMove.o: playerMove.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h playerMove.h
 
-bombs.o: bombs.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h bombs.h sound.h
+bombs.o: bombs.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h bombs.h
 
 finalText.o: finalText.c ../../drivers/avr/system.h ../../utils/tinygl.h ../../utils/pacer.h finalText.h
 
 initalise.o: initalise.c ../../drivers/avr/system.h
 
-sound.o: sound.c ../../drivers/avr/system.h ../../drivers/avr/pio.h ../../utils/pacer.h ../../utils/tinygl.h sound.h
-
 # Link: create ELF output file from object files.
-game.out: game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o reciever.o mapGenerator.o sideSelect.o flasher.o playerMove.o bombs.o finalText.o initalise.o sound.o
+game.out: game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o reciever.o mapGenerator.o sideSelect.o flasher.o playerMove.o bombs.o finalText.o initalise.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

@@ -1,3 +1,8 @@
+// By Matt Blake: 58979250
+// &  James Hay: 78055194
+// Group 135
+
+
 #include "system.h"
 #include "pio.h"
 #include "pacer.h"
@@ -18,7 +23,7 @@ void beep (int freq)
     pio_config_set (PIEZO1_PIO, PIO_OUTPUT_LOW);
     pio_config_set (PIEZO2_PIO, PIO_OUTPUT_HIGH);
 
-    while (tick < 5) {
+    while (tick < 0) {
 
         pio_output_toggle (PIEZO1_PIO);
         pio_output_toggle (PIEZO2_PIO);

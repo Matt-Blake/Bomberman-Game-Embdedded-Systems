@@ -1,3 +1,8 @@
+// By Matt Blake: 58979250
+// &  James Hay: 78055194
+// Group 135
+
+
 #include "system.h"
 #include "tinygl.h"
 #include "ir_uart.h"
@@ -50,23 +55,25 @@ void reciever_bomb_explosion(tinygl_point_t* enemy_bomb_location, int* timeForEn
 
 void reciever_recieve(tinygl_point_t* enemy_location, tinygl_point_t* enemy_bomb_location, int* win, int* enemy_bomb_dropped, int* timeForEnemyBomb)
 {
-    char c = 0;
-    c = ir_uart_getc ();
-    if (c == 'N') {
-        reciever_move_north(enemy_location);
-    } else if (c == 'S') {
-        reciever_move_south(enemy_location);
-    } else if (c == 'E') {
-        reciever_move_east(enemy_location);
-    } else if (c == 'F') {
-        reciever_move_west(enemy_location);
-    } else if (c == 'W') {
-        *win = 1;
-    } else if (c == 'L') {
-        *win = 2;
-    } else if (c == 'B') {
-        reciever_bomb_drop(enemy_location, enemy_bomb_location, enemy_bomb_dropped);
-    } else if (c == 'P') {
-        reciever_bomb_explosion(enemy_bomb_location, timeForEnemyBomb, enemy_bomb_dropped);
+    if (ir_uart_read_ready_p ()) {
+        char c = 0;
+        c = ir_uart_getc ();
+        if (c == 'N') {
+            reciever_move_north(enemy_location);
+        } else if (c == 'S') {
+            reciever_move_south(enemy_location);
+        } else if (c == 'E') {
+            reciever_move_east(enemy_location);
+        } else if (c == 'F') {
+            reciever_move_west(enemy_location);
+        } else if (c == 'W') {
+            *win = 1;
+        } else if (c == 'L') {
+            *win = 2;
+        } else if (c == 'B') {
+            reciever_bomb_drop(enemy_location, enemy_bomb_location, enemy_bomb_dropped);
+        } else if (c == 'P') {
+            reciever_bomb_explosion(enemy_bomb_location, timeForEnemyBomb, enemy_bomb_dropped);
+        }
     }
 }

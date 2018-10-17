@@ -1,3 +1,7 @@
+// By Matt Blake: 58979250
+// &  James Hay: 78055194
+// Group 135
+
 #include "system.h"
 #include "tinygl.h"
 #include "navswitch.h"

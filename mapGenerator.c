@@ -1,3 +1,8 @@
+// By Matt Blake: 58979250
+// &  James Hay: 78055194
+// Group 135
+
+
 #include "system.h"
 #include "tinygl.h"
 #include "navswitch.h"
@@ -11,7 +16,7 @@ void map_generator_generate(void)
         {path, wall, path, wall, path, wall, path},
         {path, path, wall, wall, wall, path, path},
         {path, wall, path, wall, path, wall, path},
-        {path, path, wall, path, path, wall, path},
+        {path, wall, path, wall, path, wall, path},
     };
 
     for(int i = 0; i < 5; i++) {

@@ -1,28 +1,32 @@
-// By Matt Blake: 58979250
-// &  James Hay: 78055194
-// Group 135
-
+/** @file   mapGenerator.c
+    @author Matthew Blake (58979250) and James Hay (78055194)
+    @date   16 October 2018
+    @brief  Generators the enviroment so bomberman can be played
+*/
 
 #include "system.h"
 #include "tinygl.h"
 #include "navswitch.h"
 
-#define wall 1 // remeber to change these to capital
-#define path 0
+#define MAPGENERATOR_WALL 1
+#define MAPGENERATOR_PATH 0
+#define MAPGENERATOR_ROWS 5
+#define MAPGENERATOR_COLUMNS 7
 
+/** function used to generate maps */
 void map_generator_generate(void)
 {
-    int map[5][7] = {{path, wall, path, wall, path, wall, path}, // map making section
-        {path, wall, path, wall, path, wall, path},
-        {path, path, wall, wall, wall, path, path},
-        {path, wall, path, wall, path, wall, path},
-        {path, wall, path, wall, path, wall, path},
+    int map[MAPGENERATOR_ROWS][MAPGENERATOR_COLUMNS] = {{MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH}, // map making section
+        {MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH},
+        {MAPGENERATOR_PATH, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_WALL, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_PATH},
+        {MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH},
+        {MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH, MAPGENERATOR_WALL, MAPGENERATOR_PATH},
     };
 
-    for(int i = 0; i < 5; i++) {
-        for(int j = 0; j < 7; j++) {
-            if(map[i][j] == wall) {
-                tinygl_pixel_set(tinygl_point (i, j), wall);
+    for(int i = 0; i < MAPGENERATOR_ROWS; i++) {
+        for(int j = 0; j < MAPGENERATOR_COLUMNS; j++) {
+            if(map[i][j] == MAPGENERATOR_WALL) {
+                tinygl_pixel_set(tinygl_point (i, j), MAPGENERATOR_WALL);
             }
         }
     }

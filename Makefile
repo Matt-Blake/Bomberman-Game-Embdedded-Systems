@@ -1,6 +1,6 @@
 # File:   Makefile
-# Author: Matthew Blake (58979250) and James 78055194
-# Date:   16 October 2018
+# Author: Matthew Blake (58979250) and James Hay (78055194)
+# Date:   31 December 2020
 # Descr:  Makefile for Bomberman game
 
 # Definitions.
